@@ -1,0 +1,264 @@
+# USAstockMarket
+USAstockAImarket is an AI-driven investment platform that provides real-time market insights and data analytics, empowering investors to make informed and profitable decisions in the U.S. stock market.
+
+
+
+```json
+{
+"name": "usastockaimarket",
+"version": "1.0.0",
+"private": true,
+"scripts": {
+"dev": "next dev",
+"build": "next build",
+"start": "next start",
+"lint": "next lint"
+},
+"dependencies": {
+"lucide-react": "^0.469.0",
+"next": "15.0.3",
+"react": "^18.3.1",
+"react-dom": "^18.3.1"
+},
+"devDependencies": {
+"autoprefixer": "^10.4.20",
+"postcss": "^8.4.47",
+"tailwindcss": "^3.4.14",
+"typescript": "^5.6.3"
+}
+}
+``````js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+experimental: {
+appDir: true,
+},
+reactStrictMode: true,
+};
+
+
+module.exports = nextConfig;
+``````json
+{
+"compilerOptions": {
+"target": "es5",
+"lib": ["dom", "dom.iterable", "esnext"],
+"allowJs": true,
+"skipLibCheck": true,
+"strict": false,
+"forceConsistentCasingInFileNames": true,
+"noEmit": true,
+"esModuleInterop": true,
+"module": "esnext",
+"moduleResolution": "bundler",
+"resolveJsonModule": true,
+"isolatedModules": true,
+"jsx": "preserve",
+"incremental": true
+},
+"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+"exclude": ["node_modules"]
+}
+```
+
+
+---
+
+
+### postcss.config.js
+
+
+```js
+module.exports = {
+plugins: {
+tailwindcss: {},
+autoprefixer: {},
+},
+};
+``````js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+theme: {
+extend: {},
+},
+plugins: [],
+};
+``````css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root{
+--brand-blue: #0ea5e9; /* sky-500-ish */
+--brand-deep: #041024; /* deep blue/black */
+}
+
+
+html, body, #__next {
+height: 100%;
+}
+
+
+body {
+background: linear-gradient(180deg, #000000 0%, #041024 60%);
+color: #e6eef8;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+
+a { color: inherit; }
+
+
+/* simple container max width */
+.container {
+max-width: 1200px;
+margin-left: auto;
+margin-right: auto;
+padding-left: 1rem;
+padding-right: 1rem;
+}
+``````tsx
+import './globals.css'
+
+
+export const metadata = {
+title: 'USAstockAImarket',
+description: 'Portfolio & AI Market Platform',
+}
+
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+return (
+<html lang="en">
+<body>
+{children}
+</body>
+</html>
+)
+}
+``````tsx
+"use client";
+
+
+import Link from 'next/link';
+import { ShoppingCart } from 'lucide-react';
+
+
+export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
+return (
+<nav className="w-full fixed top-0 left-0 z-50 bg-black/60 backdrop-blur-sm border-b border-blue-900/20">
+<div className="container flex items-center justify-between py-4">
+<Link href="#" className="text-2xl font-bold text-sky-400">
+USA<span className="text-white">stockAI</span>market
+</Link>
+
+
+<div className="flex items-center gap-6">
+<Link href="#portfolio" className="hover:text-sky-300">Portfolio</Link>
+<Link href="#shop" className="hover:text-sky-300">Shop</Link>
+<button className="relative" aria-label="Open cart">
+<ShoppingCart className="w-6 h-6" />
+{cartCount > 0 && (
+<span className="absolute -top-2 -right-2 bg-sky-500 text-black rounded-full text-xs px-2 py-0.5">
+{cartCount}
+</span>
+)}
+</button>
+</div>
+</div>
+</nav>
+);
+}
+``````tsx
+"use client";
+
+
+export default function ProductCard({ product, onAdd }: { product: { name: string; price: number; description?: string }, onAdd: () => void }) {
+return (
+<div className="p-6 bg-black/40 border border-blue-900/30 rounded-2xl shadow-md">
+<div className="h-40 w-full bg-gradient-to-br from-slate-800 via-black to-slate-900 rounded-xl mb-4 flex items-center justify-center text-sm text-gray-300">Image</div>
+<h4 className="text-xl font-semibold text-sky-400 mb-2">{product.name}</h4>
+<p className="text-gray-300 mb-4">{product.description ?? 'AI-powered trading product.'}</p>
+<div className="flex items-center justify-between">
+<div className="text-lg font-semibold">${product.price}</div>
+<button onClick={onAdd} className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-600 text-black font-semibold">Add to Cart</button>
+</div>
+</div>
+);
+}
+``````tsx
+function addToCart() {
+setCartCount((c) => c + 1);
+}
+
+
+return (
+<main className="min-h-screen pb-20">
+<Navbar cartCount={cartCount} />
+
+
+<section className="pt-28 text-center">
+<div className="container">
+<h1 className="text-5xl md:text-6xl font-extrabold mb-4">Build your future with <span className="text-sky-400">AI-Driven Trading</span></h1>
+<p className="text-gray-300 max-w-3xl mx-auto">Welcome to USAstockAImarket — a portfolio & AI-powered marketplace. Showcase your strategies, sell products, and present your work beautifully.</p>
+<div className="mt-8">
+<button onClick={() => alert('Demo: Coming soon')} className="px-6 py-3 bg-sky-500 hover:bg-sky-600 rounded-2xl font-semibold text-black">Explore</button>
+</div>
+</div>
+</section>
+
+
+<section id="portfolio" className="pt-24 pb-12">
+<div className="container text-center">
+<h2 className="text-4xl font-semibold mb-8">Portfolio Highlights</h2>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+{[1,2,3].map((i) => (
+<div key={i} className="bg-gradient-to-br from-slate-900 to-black p-6 rounded-2xl border border-blue-900/20">
+<div className="h-44 w-full bg-[url('https://source.unsplash.com/random/600x400?ai,stock,') ] bg-cover bg-center rounded-xl mb-4"></div>
+<h3 className="text-xl font-bold">AI Strategy {i}</h3>
+<p className="text-gray-300 mt-2">Advanced analytics and machine learning models to spot opportunities.</p>
+</div>
+))}
+</div>
+</div>
+</section>
+
+
+<section id="shop" className="pt-12 pb-16 bg-gradient-to-b from-black/70 to-slate-900">
+<div className="container text-center">
+<h2 className="text-4xl font-semibold mb-8">E-Commerce Store</h2>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+{products.map((p) => (
+<ProductCard key={p.name} product={p} onAdd={addToCart} />
+))}
+</div>
+</div>
+</section>
+
+
+<footer className="mt-12 border-t border-blue-900/20 py-6 text-center text-sm text-gray-400">
+© {new Date().getFullYear()} USAstockAImarket. All rights reserved.
+</footer>
+</main>
+);
+}
+``````md
+# USAstockAImarket
+
+
+A Next.js portfolio + demo shop. Deploy on Vercel.
+
+
+## Local
+
+
+npm install
+npm run dev
+
+
+## Deploy
+
+
